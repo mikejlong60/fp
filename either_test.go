@@ -44,9 +44,8 @@ func TestFlatMapNestedEither(t *testing.T) {
 
 func TestFlatMapError(t *testing.T) {
 	var actual = Map(FlatMap(RightA{-100}, makeF), add1000)
-	var expected = RightB{2001}
 	if reflect.TypeOf(actual).Name() != "Left" {
-		t.Errorf("Either Map  %q, want %q", actual, expected)
+		t.Errorf("Either Map  %q, want Left", actual)
 	}
 }
 
