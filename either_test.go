@@ -2,7 +2,7 @@ package fp
 
 import (
 	"errors"
-	"strconv"
+	"reflect"
 	"testing"
 )
 
@@ -15,8 +15,7 @@ func TestMapRightEither(t *testing.T) {
 	}
 	for a, _ := range cases {
 
-		var eit = RightA{a}
-		var actual = Map(eit, add1000)
+		var actual = Map(RightA{a}, add1000)
 		var expected = RightB{a + 1000}
 
 		if actual != expected {
@@ -26,8 +25,7 @@ func TestMapRightEither(t *testing.T) {
 }
 
 func TestMapLeftEither(t *testing.T) {
-	var eit = Left{errors.New("sad")}
-	var actual = Map(eit, add1000)
+	var actual = Map(Left{errors.New("sad")}, add1000)
 	var expected = Left{errors.New("sad")}
 
 	if actual.(Left).value.Error() != expected.value.Error() {
@@ -36,9 +34,7 @@ func TestMapLeftEither(t *testing.T) {
 }
 
 func TestFlatMapNestedEither(t *testing.T) {
-	var eit = RightA{1}
-	var a1 = FlatMap(eit, boxedAdd1000)
-	var actual = Map(a1, add1000)
+	var actual = Map(FlatMap(RightA{1}, makeF), add1000)
 	var expected = RightB{2001}
 
 	if actual != expected {
@@ -46,14 +42,24 @@ func TestFlatMapNestedEither(t *testing.T) {
 	}
 }
 
-func toBigString(i int) string {
-	return strconv.Itoa(i + 1000)
+func TestFlatMapError(t *testing.T) {
+	var actual = Map(FlatMap(RightA{-100}, makeF), add1000)
+	var expected = RightB{2001}
+	if reflect.TypeOf(actual).Name() != "Left" {
+		t.Errorf("Either Map  %q, want %q", actual, expected)
+	}
 }
 
-func add1000(i int) int {
-	return i + 1000
+//TODO  - Write tests around Map2, Map3, ...
+
+func add1000(i A) (error, B) {
+	if i < 0 {
+		return errors.New("can't have a number less than 0.  This is just for illustration;)"), -1
+	} else {
+		return nil, i + 1000
+	}
 }
 
-func boxedAdd1000(x int) Either {
-	return RightB{x + 1000}
+func makeF(x A) Either {
+	return Try(add1000, x)
 }
