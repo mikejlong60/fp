@@ -15,8 +15,8 @@ func TestMapRightEither(t *testing.T) {
 	}
 	for a, _ := range cases {
 
-		var actual = Map(RightA{a}, add1000)
-		var expected = RightB{a + 1000}
+		var actual = Map(Right{a}, add1000)
+		var expected = Right{a + 1000}
 
 		if actual != expected {
 			t.Errorf("Either Map  %q, want %q", actual, expected)
@@ -34,8 +34,8 @@ func TestMapLeftEither(t *testing.T) {
 }
 
 func TestFlatMapNestedEither(t *testing.T) {
-	var actual = Map(FlatMap(RightA{1}, makeF), add1000)
-	var expected = RightB{2001}
+	var actual = Map(FlatMap(Right{1}, makeF), add1000)
+	var expected = Right{2001}
 
 	if actual != expected {
 		t.Errorf("Either Map  %q, want %q", actual, expected)
@@ -43,20 +43,30 @@ func TestFlatMapNestedEither(t *testing.T) {
 }
 
 func TestFlatMapError(t *testing.T) {
-	var actual = Map(FlatMap(RightA{-100}, makeF), add1000)
+	var actual = Map(FlatMap(Right{-100}, makeF), add1000)
 	if reflect.TypeOf(actual).Name() != "Left" {
 		t.Errorf("Either Map  %q, want Left", actual)
 	}
 }
 
 //TODO  - Write tests around Map2, Map3, ...
+//func TestMap2(t *testing.T) {
+//	var actual = Map2(makeF(1), makeF(2), sum)
+//	if actual != (Right{2003}) {
+//		t.Errorf(" Map2  %q, want Right{2003}", actual)
+//	}
+//}/
 
-func add1000(i A) (error, B) {
+func add1000(i A) (error, A) {
 	if i < 0 {
 		return errors.New("can't have a number less than 0.  This is just for illustration;)"), -1
 	} else {
 		return nil, i + 1000
 	}
+}
+
+func sum(x, y A) A {
+	return x + y
 }
 
 func makeF(x A) Either {
