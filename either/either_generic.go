@@ -1,4 +1,4 @@
-//go:generate genny -in=either_generic.go -out=either_concrete.go gen  "Either=interface{} O=string,bool,FancyType P=int"
+//go:generate genny -in=either_generic.go -out=either_concrete.go gen  "Either=interface{} AA=string,bool,FancyType BB=int"
 
 package either
 
@@ -8,46 +8,46 @@ import (
 	"github.com/cheekybits/genny/generic"
 )
 
-type O generic.Type
-type P generic.Type
+type AA generic.Type
+type BB generic.Type
 
 type Either generic.Type
 
-type PRight struct {
-	value P
+type BBRight struct {
+	value BB
 }
 
-type ORight struct {
-	value O
+type AARight struct {
+	value AA
 }
 
-func OPTry(f func(O) (error, P), x O) Either {
+func AABBTry(f func(AA) (error, BB), x AA) Either {
 	err, r := f(x)
 	if err != nil {
 		return Left{err}
 	} else {
-		return PRight{r}
+		return BBRight{r}
 	}
 }
 
-func OPMap(e Either, f func(O) (error, P)) Either {
+func AABBMap(e Either, f func(AA) (error, BB)) Either {
 	switch e.(type) {
 	case Left:
 		return e
-	case ORight:
-		v := e.(ORight).value
-		return OPTry(f, v)
+	case AARight:
+		v := e.(AARight).value
+		return AABBTry(f, v)
 	default:
 		panic(fmt.Sprintf("Unknown type %T", e))
 	}
 }
 
-func OPFlatMap(e Either, f func(O) Either) Either {
+func AABBFlatMap(e Either, f func(AA) Either) Either {
 	switch e.(type) {
 	case Left:
 		return e
-	case ORight:
-		v := e.(ORight).value
+	case AARight:
+		v := e.(AARight).value
 		return f(v)
 	default:
 		panic(fmt.Sprintf("Unknown type %T", e))
