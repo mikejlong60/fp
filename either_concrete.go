@@ -83,3 +83,40 @@ func BoolIntFlatMap(e interface{}, f func(bool) interface{}) interface{} {
 		panic(fmt.Sprintf("Unknown type %T", e))
 	}
 }
+
+type FancyTypeRight struct {
+	value FancyType
+}
+
+func FancyTypeIntTry(f func(FancyType) (error, int), x FancyType) interface{} {
+	err, r := f(x)
+	if err != nil {
+		return Left{err}
+	} else {
+		return IntRight{r}
+	}
+}
+
+func FancyTypeIntMap(e interface{}, f func(FancyType) (error, int)) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case FancyTypeRight:
+		v := e.(FancyTypeRight).value
+		return FancyTypeIntTry(f, v)
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
+}
+
+func FancyTypeIntFlatMap(e interface{}, f func(FancyType) interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case FancyTypeRight:
+		v := e.(FancyTypeRight).value
+		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
+}
