@@ -1,6 +1,6 @@
-//go:generate genny -in=either_generic.go -out=either_concrete.go gen  "Either2=interface{} O=string,bool,FancyType P=int"
+//go:generate genny -in=either_generic.go -out=either_concrete.go gen  "Either=interface{} O=string,bool,FancyType P=int"
 
-package fp
+package either
 
 import (
 	"fmt"
@@ -11,7 +11,7 @@ import (
 type O generic.Type
 type P generic.Type
 
-type Either2 generic.Type
+type Either generic.Type
 
 type PRight struct {
 	value P
@@ -21,7 +21,7 @@ type ORight struct {
 	value O
 }
 
-func OPTry(f func(O) (error, P), x O) Either2 {
+func OPTry(f func(O) (error, P), x O) Either {
 	err, r := f(x)
 	if err != nil {
 		return Left{err}
@@ -30,7 +30,7 @@ func OPTry(f func(O) (error, P), x O) Either2 {
 	}
 }
 
-func OPMap(e Either2, f func(O) (error, P)) Either2 {
+func OPMap(e Either, f func(O) (error, P)) Either {
 	switch e.(type) {
 	case Left:
 		return e
@@ -42,7 +42,7 @@ func OPMap(e Either2, f func(O) (error, P)) Either2 {
 	}
 }
 
-func OPFlatMap(e Either2, f func(O) Either2) Either2 {
+func OPFlatMap(e Either, f func(O) Either) Either {
 	switch e.(type) {
 	case Left:
 		return e
