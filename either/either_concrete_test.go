@@ -38,6 +38,32 @@ func TestStringIntFlatMapSuccess(t *testing.T) {
 	}
 }
 
+func TestStringIntOrElseRight(t *testing.T) {
+	var actual = StringIntOrElse(StringRight{"12"}, IntRight{12})
+	var expected = StringRight{"12"}
+	if actual != expected {
+		t.Errorf("StringIntOrElse had type: %T and value: %v, should have been type:  %T  value: %v ", actual, actual, expected, expected)
+	}
+}
+
+func TestStringIntOrElseLeft(t *testing.T) {
+	var actual = StringIntOrElse(Left{errors.New("Dang!")}, IntRight{12})
+	var expected = IntRight{12}
+	if actual != expected {
+		t.Errorf("StringIntOrElse had type: %T and value: %v, should have been type:  %T  value: %v ", actual, actual, expected, expected)
+	}
+}
+
+func TestStringIntOrElseBadOtherType(t *testing.T) {
+
+	defer func() {
+		if r := recover(); r == nil {
+			t.Errorf("StringIntOrElse did not fail on bad other type")
+		}
+	}()
+	StringIntOrElse(Left{errors.New("Dang!")}, 12)
+}
+
 func stringToInt(x string) (error, int) {
 	return nil, 12
 }

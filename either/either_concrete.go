@@ -31,7 +31,7 @@ func StringIntMap(e interface{}, f func(string) (error, int)) interface{} {
 		v := e.(StringRight).value
 		return StringIntTry(f, v)
 	default:
-		panic(fmt.Sprintf("Unknown type %T", e))
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or StringRight. Was type %T", e))
 	}
 }
 
@@ -42,6 +42,22 @@ func StringIntFlatMap(e interface{}, f func(string) interface{}) interface{} {
 	case StringRight:
 		v := e.(StringRight).value
 		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or StringRight. Was type %T", e))
+	}
+}
+
+func StringIntOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, IntRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or IntRight. Was type %T", other))
+		}
+	case StringRight:
+		return e
 	default:
 		panic(fmt.Sprintf("Unknown type %T", e))
 	}
@@ -68,7 +84,7 @@ func BoolIntMap(e interface{}, f func(bool) (error, int)) interface{} {
 		v := e.(BoolRight).value
 		return BoolIntTry(f, v)
 	default:
-		panic(fmt.Sprintf("Unknown type %T", e))
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or BoolRight. Was type %T", e))
 	}
 }
 
@@ -79,6 +95,22 @@ func BoolIntFlatMap(e interface{}, f func(bool) interface{}) interface{} {
 	case BoolRight:
 		v := e.(BoolRight).value
 		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or BoolRight. Was type %T", e))
+	}
+}
+
+func BoolIntOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, IntRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or IntRight. Was type %T", other))
+		}
+	case BoolRight:
+		return e
 	default:
 		panic(fmt.Sprintf("Unknown type %T", e))
 	}
@@ -105,7 +137,7 @@ func FancyTypeIntMap(e interface{}, f func(FancyType) (error, int)) interface{} 
 		v := e.(FancyTypeRight).value
 		return FancyTypeIntTry(f, v)
 	default:
-		panic(fmt.Sprintf("Unknown type %T", e))
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or FancyTypeRight. Was type %T", e))
 	}
 }
 
@@ -116,6 +148,22 @@ func FancyTypeIntFlatMap(e interface{}, f func(FancyType) interface{}) interface
 	case FancyTypeRight:
 		v := e.(FancyTypeRight).value
 		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or FancyTypeRight. Was type %T", e))
+	}
+}
+
+func FancyTypeIntOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, IntRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or IntRight. Was type %T", other))
+		}
+	case FancyTypeRight:
+		return e
 	default:
 		panic(fmt.Sprintf("Unknown type %T", e))
 	}
