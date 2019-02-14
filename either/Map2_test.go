@@ -8,8 +8,8 @@ import (
 func TestMap2Success(t *testing.T) {
 	var e1 = IntRight{12}
 	var e2 = IntRight{120}
-	f := func(a, b int) int {
-		return a + b
+	f := func(a, b int) (error, int) {
+		return nil, a + b
 	}
 	actual := Map2(e1, e2, f)
 	expected := IntRight{132}
@@ -21,8 +21,8 @@ func TestMap2Success(t *testing.T) {
 func TestMap2Failure1st(t *testing.T) {
 	var e2 = IntRight{12}
 	var e1 = Left{errors.New("Dang!")}
-	f := func(a, b int) int {
-		return a + b
+	f := func(a, b int) (error, int) {
+		return nil, a + b
 	}
 	actual := Map2(e1, e2, f)
 	if actual != e1 {
@@ -33,8 +33,8 @@ func TestMap2Failure1st(t *testing.T) {
 func TestMap2Failure2nd(t *testing.T) {
 	var e1 = IntRight{12}
 	var e2 = Left{errors.New("Dang!")}
-	f := func(a, b int) int {
-		return a + b
+	f := func(a, b int) (error, int) {
+		return nil, a + b
 	}
 	actual := Map2(e1, e2, f)
 	if actual != e2 {

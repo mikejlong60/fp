@@ -24,6 +24,7 @@ func TestStringIntMapSuccess(t *testing.T) {
 
 func TestStringIntMapError(t *testing.T) {
 	var actual = StringIntMap(StringRight{"12"}, stringToIntError)
+	d
 
 	if reflect.TypeOf(actual).Name() != "Left" {
 		t.Errorf("StringIntMap should have been type: Left  but was type:  %T  value: %v ", actual, actual)
