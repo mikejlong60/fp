@@ -61,7 +61,12 @@ func TestStringIntOrElseBadOtherType(t *testing.T) {
 			t.Errorf("StringIntOrElse did not fail on bad other type")
 		}
 	}()
-	StringIntOrElse(Left{errors.New("Dang!")}, 12)
+	StringIntOrElse(Left{errors.New("Dang!")}, FancyType{
+		lastName:  "long",
+		firstName: "mike",
+		ssn:       "11111111",
+		age:       632,
+	})
 }
 
 func stringToInt(x string) (error, int) {
