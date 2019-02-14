@@ -10,6 +10,7 @@ import (
 
 type AA generic.Type
 type BB generic.Type
+type CC generic.Type
 
 type Either generic.Type
 
