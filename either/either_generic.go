@@ -1,4 +1,4 @@
-//go:generate genny -in=either_generic.go -out=either_concrete.go gen  "Either=interface{} AA=string,bool,FancyType BB=int"
+//go:generate genny -in=either_generic.go -out=either_concrete.go gen  "Either=interface{} AA=string,bool,FancyType BB=int,bool,FancyType"
 
 package either
 
@@ -10,7 +10,6 @@ import (
 
 type AA generic.Type
 type BB generic.Type
-type CC generic.Type
 
 type Either generic.Type
 

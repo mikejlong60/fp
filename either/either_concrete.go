@@ -67,6 +67,108 @@ type BoolRight struct {
 	value bool
 }
 
+func StringBoolTry(f func(string) (error, bool), x string) interface{} {
+	err, r := f(x)
+	if err != nil {
+		return Left{err}
+	} else {
+		return BoolRight{r}
+	}
+}
+
+func StringBoolMap(e interface{}, f func(string) (error, bool)) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case StringRight:
+		v := e.(StringRight).value
+		return StringBoolTry(f, v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or StringRight. Was type %T", e))
+	}
+}
+
+func StringBoolFlatMap(e interface{}, f func(string) interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case StringRight:
+		v := e.(StringRight).value
+		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or StringRight. Was type %T", e))
+	}
+}
+
+func StringBoolOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, BoolRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or BoolRight. Was type %T", other))
+		}
+	case StringRight:
+		return e
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
+}
+
+type FancyTypeRight struct {
+	value FancyType
+}
+
+func StringFancyTypeTry(f func(string) (error, FancyType), x string) interface{} {
+	err, r := f(x)
+	if err != nil {
+		return Left{err}
+	} else {
+		return FancyTypeRight{r}
+	}
+}
+
+func StringFancyTypeMap(e interface{}, f func(string) (error, FancyType)) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case StringRight:
+		v := e.(StringRight).value
+		return StringFancyTypeTry(f, v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or StringRight. Was type %T", e))
+	}
+}
+
+func StringFancyTypeFlatMap(e interface{}, f func(string) interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case StringRight:
+		v := e.(StringRight).value
+		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or StringRight. Was type %T", e))
+	}
+}
+
+func StringFancyTypeOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, FancyTypeRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or FancyTypeRight. Was type %T", other))
+		}
+	case StringRight:
+		return e
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
+}
+
 func BoolIntTry(f func(bool) (error, int), x bool) interface{} {
 	err, r := f(x)
 	if err != nil {
@@ -116,8 +218,102 @@ func BoolIntOrElse(e, other interface{}) interface{} {
 	}
 }
 
-type FancyTypeRight struct {
-	value FancyType
+func BoolBoolTry(f func(bool) (error, bool), x bool) interface{} {
+	err, r := f(x)
+	if err != nil {
+		return Left{err}
+	} else {
+		return BoolRight{r}
+	}
+}
+
+func BoolBoolMap(e interface{}, f func(bool) (error, bool)) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case BoolRight:
+		v := e.(BoolRight).value
+		return BoolBoolTry(f, v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or BoolRight. Was type %T", e))
+	}
+}
+
+func BoolBoolFlatMap(e interface{}, f func(bool) interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case BoolRight:
+		v := e.(BoolRight).value
+		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or BoolRight. Was type %T", e))
+	}
+}
+
+func BoolBoolOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, BoolRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or BoolRight. Was type %T", other))
+		}
+	case BoolRight:
+		return e
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
+}
+
+func BoolFancyTypeTry(f func(bool) (error, FancyType), x bool) interface{} {
+	err, r := f(x)
+	if err != nil {
+		return Left{err}
+	} else {
+		return FancyTypeRight{r}
+	}
+}
+
+func BoolFancyTypeMap(e interface{}, f func(bool) (error, FancyType)) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case BoolRight:
+		v := e.(BoolRight).value
+		return BoolFancyTypeTry(f, v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or BoolRight. Was type %T", e))
+	}
+}
+
+func BoolFancyTypeFlatMap(e interface{}, f func(bool) interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case BoolRight:
+		v := e.(BoolRight).value
+		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or BoolRight. Was type %T", e))
+	}
+}
+
+func BoolFancyTypeOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, FancyTypeRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or FancyTypeRight. Was type %T", other))
+		}
+	case BoolRight:
+		return e
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
 }
 
 func FancyTypeIntTry(f func(FancyType) (error, int), x FancyType) interface{} {
@@ -161,6 +357,104 @@ func FancyTypeIntOrElse(e, other interface{}) interface{} {
 			return other
 		default:
 			panic(fmt.Sprintf("Unknown other type.  Must be Left or IntRight. Was type %T", other))
+		}
+	case FancyTypeRight:
+		return e
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
+}
+
+func FancyTypeBoolTry(f func(FancyType) (error, bool), x FancyType) interface{} {
+	err, r := f(x)
+	if err != nil {
+		return Left{err}
+	} else {
+		return BoolRight{r}
+	}
+}
+
+func FancyTypeBoolMap(e interface{}, f func(FancyType) (error, bool)) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case FancyTypeRight:
+		v := e.(FancyTypeRight).value
+		return FancyTypeBoolTry(f, v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or FancyTypeRight. Was type %T", e))
+	}
+}
+
+func FancyTypeBoolFlatMap(e interface{}, f func(FancyType) interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case FancyTypeRight:
+		v := e.(FancyTypeRight).value
+		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or FancyTypeRight. Was type %T", e))
+	}
+}
+
+func FancyTypeBoolOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, BoolRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or BoolRight. Was type %T", other))
+		}
+	case FancyTypeRight:
+		return e
+	default:
+		panic(fmt.Sprintf("Unknown type %T", e))
+	}
+}
+
+func FancyTypeFancyTypeTry(f func(FancyType) (error, FancyType), x FancyType) interface{} {
+	err, r := f(x)
+	if err != nil {
+		return Left{err}
+	} else {
+		return FancyTypeRight{r}
+	}
+}
+
+func FancyTypeFancyTypeMap(e interface{}, f func(FancyType) (error, FancyType)) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case FancyTypeRight:
+		v := e.(FancyTypeRight).value
+		return FancyTypeFancyTypeTry(f, v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type. Must be Left or FancyTypeRight. Was type %T", e))
+	}
+}
+
+func FancyTypeFancyTypeFlatMap(e interface{}, f func(FancyType) interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		return e
+	case FancyTypeRight:
+		v := e.(FancyTypeRight).value
+		return f(v)
+	default:
+		panic(fmt.Sprintf("Unknown Interface type.  Must be Left or FancyTypeRight. Was type %T", e))
+	}
+}
+
+func FancyTypeFancyTypeOrElse(e, other interface{}) interface{} {
+	switch e.(type) {
+	case Left:
+		switch other.(type) {
+		case Left, FancyTypeRight:
+			return other
+		default:
+			panic(fmt.Sprintf("Unknown other type.  Must be Left or FancyTypeRight. Was type %T", other))
 		}
 	case FancyTypeRight:
 		return e
