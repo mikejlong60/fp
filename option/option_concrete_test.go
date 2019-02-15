@@ -30,7 +30,7 @@ func TestStringIntMapError(t *testing.T) {
 }
 
 func TestStringIntFlatMapSuccess(t *testing.T) {
-	var actual = StringIntFlatMap(StringSome{"12"}, stringToIntEither)
+	var actual = StringIntFlatMap(StringSome{"12"}, stringToIntOption)
 	var expected = IntSome{12}
 	if actual != expected {
 		t.Errorf("StringIntFlatMap had type: %T and value: %v, should have been type:  %T  value: %v ", actual, actual, expected, expected)
@@ -76,6 +76,6 @@ func stringToIntError(x string) (error, int) {
 	return errors.New("bull"), -1
 }
 
-func stringToIntEither(x string) interface{} {
+func stringToIntOption(x string) interface{} {
 	return IntSome{12}
 }
