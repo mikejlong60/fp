@@ -1,4 +1,4 @@
-//go:generate genny -in=option_generic.go -out=option_concrete.go gen  "Option=interface{} AA=string,bool,FancyType BB=int,bool,FancyType"
+//go:generate genny -in=option_generic.go -out=option_concrete.go gen  "Option=interface{} AA=string BB=int"
 
 package option
 
@@ -24,7 +24,7 @@ type AASome struct {
 func AABBTry(f func(AA) (error, BB), x AA) Option {
 	err, r := f(x)
 	if err != nil {
-		return None
+		return None{}
 	} else {
 		return BBSome{r}
 	}

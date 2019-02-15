@@ -19,7 +19,7 @@ func TestMap2Success(t *testing.T) {
 
 func TestMap2Failure1st(t *testing.T) {
 	var e2 = IntSome{12}
-	var e1 = None
+	var e1 = None{}
 	f := func(a, b int) (error, int) {
 		return nil, a + b
 	}
@@ -31,7 +31,7 @@ func TestMap2Failure1st(t *testing.T) {
 
 func TestMap2Failure2nd(t *testing.T) {
 	var e1 = IntSome{12}
-	var e2 = None
+	var e2 = None{}
 	f := func(a, b int) (error, int) {
 		return nil, a + b
 	}

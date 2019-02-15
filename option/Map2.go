@@ -3,7 +3,7 @@ package option
 func IntIntTry(f func(int, int) (error, int), x, y int) Option {
 	err, r := f(x, y)
 	if err != nil {
-		return None
+		return None{}
 	} else {
 		return IntSome{r}
 	}

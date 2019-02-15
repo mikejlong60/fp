@@ -46,7 +46,7 @@ func TestStringIntOrElseRight(t *testing.T) {
 }
 
 func TestStringIntOrElseLeft(t *testing.T) {
-	var actual = StringIntOrElse(None, IntSome{12})
+	var actual = StringIntOrElse(None{}, IntSome{12})
 	var expected = IntSome{12}
 	if actual != expected {
 		t.Errorf("StringIntOrElse had type: %T and value: %v, should have been type:  %T  value: %v ", actual, actual, expected, expected)
@@ -60,7 +60,7 @@ func TestStringIntOrElseBadOtherType(t *testing.T) {
 			t.Errorf("StringIntOrElse did not fail on bad other type")
 		}
 	}()
-	StringIntOrElse(None, FancyType{
+	StringIntOrElse(None{}, FancyType{
 		lastName:  "long",
 		firstName: "mike",
 		ssn:       "11111111",
